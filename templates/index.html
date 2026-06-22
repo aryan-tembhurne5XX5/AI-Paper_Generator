@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Question Paper Generator</title>
+    <meta name="description" content="AI-powered university question paper generator with Bloom's taxonomy alignment and difficulty control.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <!-- Animated Background -->
+    <div class="bg-grid"></div>
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+    <div class="bg-glow bg-glow-3"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="nav-content">
+            <div class="logo">
+                <div class="logo-icon">
+                    <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+                        <path d="M14 2L2 8v12l12 6 12-6V8L14 2z" stroke="url(#logo-grad)" stroke-width="2" fill="none"/>
+                        <path d="M14 8l-6 3v6l6 3 6-3v-6l-6-3z" fill="url(#logo-grad)" opacity="0.3"/>
+                        <circle cx="14" cy="14" r="3" fill="url(#logo-grad)"/>
+                        <defs><linearGradient id="logo-grad" x1="0" y1="0" x2="28" y2="28"><stop stop-color="#818cf8"/><stop offset="1" stop-color="#c084fc"/></linearGradient></defs>
+                    </svg>
+                </div>
+                <span class="logo-text">PaperGen<span class="logo-ai">AI</span></span>
+            </div>
+            <div class="nav-links">
+                <a href="#generator" class="nav-link active">Generator</a>
+                <a href="#preview" class="nav-link">Preview</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header id="hero">
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                <span>Powered by Groq &amp; Llama 3.3</span>
+            </div>
+            <h1>AI Question Paper<br><span class="gradient-text">Generator</span></h1>
+            <p class="hero-subtitle">Generate university-standard exam papers with Bloom's taxonomy alignment, difficulty control, and LaTeX formatting — in seconds.</p>
+            <a href="#generator" class="hero-cta">
+                <span>Start Generating</span>
+                <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+            </a>
+        </div>
+        <div class="hero-visual">
+            <div class="float-card float-card-1">
+                <div class="fc-icon">📝</div>
+                <div class="fc-label">Question Paper</div>
+            </div>
+            <div class="float-card float-card-2">
+                <div class="fc-icon">🧠</div>
+                <div class="fc-label">Bloom's Taxonomy</div>
+            </div>
+            <div class="float-card float-card-3">
+                <div class="fc-icon">📊</div>
+                <div class="fc-label">Difficulty Control</div>
+            </div>
+            <div class="float-card float-card-4">
+                <div class="fc-icon">📄</div>
+                <div class="fc-label">LaTeX Export</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Generator Section -->
+    <main id="generator">
+        <div class="section-header">
+            <h2>Configure Your Paper</h2>
+            <p>Fill in the details and let AI generate a professionally structured question paper.</p>
+        </div>
+
+        <div class="generator-grid">
+            <!-- Left Panel: Config -->
+            <div class="config-panel glass-card">
+                <form id="paper-form">
+                    <!-- Exam Info -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <span class="section-icon">🏫</span>
+                            Exam Information
+                        </h3>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="exam_name">Exam Name</label>
+                                <input type="text" id="exam_name" placeholder="End Semester Examination" value="End Semester Examination">
+                            </div>
+                            <div class="form-group">
+                                <label for="subject">Subject <span class="required">*</span></label>
+                                <select id="subject" required>
+                                    <option value="">Loading subjects...</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row form-row-3">
+                            <div class="form-group">
+                                <label for="semester">Semester</label>
+                                <input type="text" id="semester" placeholder="I" value="I">
+                            </div>
+                            <div class="form-group">
+                                <label for="year">Year</label>
+                                <input type="text" id="year" placeholder="2024" value="2024">
+                            </div>
+                            <div class="form-group">
+                                <label for="duration">Duration</label>
+                                <input type="text" id="duration" placeholder="3 Hours" value="3 Hours">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="total_marks">Total Marks</label>
+                            <div class="marks-slider">
+                                <input type="range" id="total_marks" min="20" max="200" value="80" step="10">
+                                <span class="marks-value" id="marks-display">80</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Topic Selection -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <span class="section-icon">📚</span>
+                            Topics
+                        </h3>
+                        <div id="topics-container" class="topics-chips">
+                            <p class="topics-placeholder">Select a subject first to see available topics</p>
+                        </div>
+                    </div>
+
+                    <!-- Difficulty Distribution -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <span class="section-icon">⚡</span>
+                            Difficulty Distribution
+                        </h3>
+                        <div class="difficulty-sliders">
+                            <div class="diff-item">
+                                <div class="diff-header">
+                                    <span class="diff-label easy">Easy</span>
+                                    <span class="diff-value" id="easy-val">30%</span>
+                                </div>
+                                <input type="range" id="diff-easy" min="0" max="100" value="30" step="5" class="diff-slider easy-slider">
+                                <span class="diff-desc">Remember, Understand</span>
+                            </div>
+                            <div class="diff-item">
+                                <div class="diff-header">
+                                    <span class="diff-label medium">Medium</span>
+                                    <span class="diff-value" id="medium-val">50%</span>
+                                </div>
+                                <input type="range" id="diff-medium" min="0" max="100" value="50" step="5" class="diff-slider medium-slider">
+                                <span class="diff-desc">Apply, Analyze</span>
+                            </div>
+                            <div class="diff-item">
+                                <div class="diff-header">
+                                    <span class="diff-label hard">Hard</span>
+                                    <span class="diff-value" id="hard-val">20%</span>
+                                </div>
+                                <input type="range" id="diff-hard" min="0" max="100" value="20" step="5" class="diff-slider hard-slider">
+                                <span class="diff-desc">Evaluate, Create</span>
+                            </div>
+                            <div class="diff-total">
+                                <span>Total:</span>
+                                <span id="diff-total-val" class="diff-total-num">100%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bloom's Taxonomy -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <span class="section-icon">🧠</span>
+                            Bloom's Taxonomy
+                        </h3>
+                        <div class="bloom-grid">
+                            <div class="bloom-item" data-level="remember">
+                                <div class="bloom-bar" style="--bloom-color: #6ee7b7;">
+                                    <div class="bloom-fill" style="width: 20%;"></div>
+                                </div>
+                                <div class="bloom-info">
+                                    <span class="bloom-name">Remember</span>
+                                    <input type="number" class="bloom-input" id="bloom-remember" value="20" min="0" max="100" step="5">
+                                </div>
+                            </div>
+                            <div class="bloom-item" data-level="understand">
+                                <div class="bloom-bar" style="--bloom-color: #93c5fd;">
+                                    <div class="bloom-fill" style="width: 20%;"></div>
+                                </div>
+                                <div class="bloom-info">
+                                    <span class="bloom-name">Understand</span>
+                                    <input type="number" class="bloom-input" id="bloom-understand" value="20" min="0" max="100" step="5">
+                                </div>
+                            </div>
+                            <div class="bloom-item" data-level="apply">
+                                <div class="bloom-bar" style="--bloom-color: #fcd34d;">
+                                    <div class="bloom-fill" style="width: 20%;"></div>
+                                </div>
+                                <div class="bloom-info">
+                                    <span class="bloom-name">Apply</span>
+                                    <input type="number" class="bloom-input" id="bloom-apply" value="20" min="0" max="100" step="5">
+                                </div>
+                            </div>
+                            <div class="bloom-item" data-level="analyze">
+                                <div class="bloom-bar" style="--bloom-color: #fdba74;">
+                                    <div class="bloom-fill" style="width: 15%;"></div>
+                                </div>
+                                <div class="bloom-info">
+                                    <span class="bloom-name">Analyze</span>
+                                    <input type="number" class="bloom-input" id="bloom-analyze" value="15" min="0" max="100" step="5">
+                                </div>
+                            </div>
+                            <div class="bloom-item" data-level="evaluate">
+                                <div class="bloom-bar" style="--bloom-color: #f87171;">
+                                    <div class="bloom-fill" style="width: 15%;"></div>
+                                </div>
+                                <div class="bloom-info">
+                                    <span class="bloom-name">Evaluate</span>
+                                    <input type="number" class="bloom-input" id="bloom-evaluate" value="15" min="0" max="100" step="5">
+                                </div>
+                            </div>
+                            <div class="bloom-item" data-level="create">
+                                <div class="bloom-bar" style="--bloom-color: #c084fc;">
+                                    <div class="bloom-fill" style="width: 10%;"></div>
+                                </div>
+                                <div class="bloom-info">
+                                    <span class="bloom-name">Create</span>
+                                    <input type="number" class="bloom-input" id="bloom-create" value="10" min="0" max="100" step="5">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Generation Mode -->
+                    <div class="form-section">
+                        <h3 class="form-section-title">
+                            <span class="section-icon">🤖</span>
+                            Generation Mode
+                        </h3>
+                        <div class="mode-toggle">
+                            <button type="button" class="mode-btn active" data-mode="ai" id="mode-ai">
+                                <span class="mode-icon">✨</span>
+                                <span class="mode-label">AI Generation</span>
+                                <span class="mode-desc">Uses Groq LLM</span>
+                            </button>
+                            <button type="button" class="mode-btn" data-mode="dataset" id="mode-dataset">
+                                <span class="mode-icon">📂</span>
+                                <span class="mode-label">Dataset Only</span>
+                                <span class="mode-desc">No API needed</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Submit -->
+                    <button type="submit" class="generate-btn" id="generate-btn">
+                        <span class="btn-text">Generate Question Paper</span>
+                        <span class="btn-loader" style="display:none;">
+                            <span class="spinner"></span>
+                            <span>Generating...</span>
+                        </span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Right Panel: Preview -->
+            <div class="preview-panel" id="preview">
+                <div class="preview-tabs">
+                    <button class="tab-btn active" data-tab="paper" id="tab-paper">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="2" y="1" width="12" height="14" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M5 5h6M5 8h6M5 11h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+                        Paper Preview
+                    </button>
+                    <button class="tab-btn" data-tab="latex" id="tab-latex">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M4 2h8l-2 12H6L4 2z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+                        LaTeX Code
+                    </button>
+                </div>
+
+                <!-- Empty State -->
+                <div class="preview-empty" id="preview-empty">
+                    <div class="empty-illustration">
+                        <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
+                            <circle cx="60" cy="60" r="50" stroke="url(#empty-grad)" stroke-width="2" stroke-dasharray="8 4" opacity="0.3"/>
+                            <rect x="35" y="25" width="50" height="70" rx="6" stroke="url(#empty-grad)" stroke-width="2" opacity="0.5"/>
+                            <path d="M45 45h30M45 55h30M45 65h20" stroke="url(#empty-grad)" stroke-width="2" stroke-linecap="round" opacity="0.3"/>
+                            <circle cx="60" cy="50" r="12" stroke="url(#empty-grad)" stroke-width="2" opacity="0.2"/>
+                            <path d="M56 50l3 3 5-6" stroke="url(#empty-grad)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" opacity="0.4"/>
+                            <defs><linearGradient id="empty-grad" x1="20" y1="20" x2="100" y2="100"><stop stop-color="#818cf8"/><stop offset="1" stop-color="#c084fc"/></linearGradient></defs>
+                        </svg>
+                    </div>
+                    <h3>No Paper Generated Yet</h3>
+                    <p>Configure your paper settings and click "Generate" to create a question paper.</p>
+                </div>
+
+                <!-- Paper Preview -->
+                <div class="preview-content" id="preview-paper" style="display:none;">
+                    <div class="paper-sheet" id="paper-sheet">
+                        <!-- Dynamic content inserted here -->
+                    </div>
+                </div>
+
+                <!-- LaTeX Preview -->
+                <div class="preview-content" id="preview-latex" style="display:none;">
+                    <div class="latex-toolbar">
+                        <button class="copy-btn" id="copy-latex" title="Copy LaTeX to clipboard">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><rect x="5" y="5" width="9" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M11 5V3.5A1.5 1.5 0 009.5 2h-6A1.5 1.5 0 002 3.5v6A1.5 1.5 0 003.5 11H5" stroke="currentColor" stroke-width="1.5"/></svg>
+                            Copy
+                        </button>
+                        <button class="copy-btn" id="download-latex" title="Download .tex file">
+                            <svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12h10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                            Download .tex
+                        </button>
+                    </div>
+                    <pre class="latex-code" id="latex-code"></pre>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2024 PaperGenAI — AI Question Paper Generator. GID: 2 | PS: 8</p>
+        </div>
+    </footer>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>
