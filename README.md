@@ -39,6 +39,3 @@ This script uses the `unsloth` library to perform highly memory-efficient fine-t
 4. Copy the entire contents of `finetune_unsloth.py` into a notebook cell.
 5. Uncomment the first two `!pip install` lines at the top of the script and run the cell.
 6. The script will train the model and save the adapters to a folder named `llama3-paper-generator-lora`.
-
-Once you've generated the dataset and fine-tuned your model, let me know, and we can proceed to build the UI!
-# AI-Paper_Generator
